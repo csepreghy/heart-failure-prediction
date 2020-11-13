@@ -1,0 +1,3 @@
+*.icloud
+.vscode
+__pycache__/
