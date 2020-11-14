@@ -13,9 +13,10 @@ if __name__ == '__main__':
     
     mlp = MLP()
     X_train, X_test, y_train, y_test = mlp.prepare_data(df)
-    model = mlp.fit(X_train, X_test, y_train, y_test, epochs=100)
+    model = mlp.fit(X_train, X_test, y_train, y_test, epochs=50)
     
     y_pred = model.predict(X_test).flatten()
+    y_pred = [round(value) for value in y_pred]
     print(f'y_pred = {y_pred}')
 
     # evaluate predictions

@@ -43,22 +43,20 @@ class MLP():
     def _build_model(self):
         model = Sequential()
 
-        model.add(Dense(128, activation='relu'))
+        model.add(Dense(64, activation='relu'))
         model.add(Dropout(0.5))
-
-        model.add(Dense(128, activation='relu'))
 
         model.add(Dense(1, activation='sigmoid'))
         
-        model.compile(loss='binary_crossentropy', optimizer=Adam(0.0001), metrics=['val_accuracy'])
+        model.compile(loss='binary_crossentropy', optimizer=Adam(0.0001), metrics=['accuracy'])
         # print(model.summary())
 
         return model
     
     def _get_callbacks(self):
-        earlystopping = EarlyStopping(monitor='val_loss', patience=10)
+        earlystopping = EarlyStopping(monitor='val_accuracy', patience=10)
         
-        return []
+        return earlystopping
 
     def fit(self, X_train, X_test, y_train, y_test, epochs=50):
         model = self._build_model()
@@ -66,12 +64,12 @@ class MLP():
         callbacks = self._get_callbacks()
 
         history = model.fit(X_train, y_train,
-                            batch_size=16,
+                            batch_size=4,
                             epochs=epochs,
-                            validation_split=0.33,
+                            validation_split=0.2,
                             callbacks=[callbacks])
 
-        accuracies = history.history['accuracy']
+        accuracies = history.history['val_accuracy']
         print(f'accuracies : {accuracies}')
 
         return model
